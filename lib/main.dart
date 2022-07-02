@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './question.dart';
 import './answer.dart';
+import './quiz.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -18,42 +19,44 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
+  final questions = [
+    {
+      'question': 'What\'s your favorite type of food?',
+      'answers': ['Quinoa', 'Lentils', 'Brown rice']
+    },
+    {
+      'question': 'What\'s your favorite temperature for weather?',
+      'answers': ['70F', '80F', '90F']
+    },
+  ];
 
   void _answerQuestion() {
     setState(() {
-      _questionIndex = (_questionIndex < 1) ? 1 : 0;
+      _questionIndex < questions.length
+          ? _questionIndex += 1
+          : _questionIndex = 0;
     });
-    print(_questionIndex);
+    // if (_questionIndex < questions.length) {
+    //   print('True');
+    // } else {
+    //   setState(() {
+    //     _questionIndex = 0;
+    //   });
+    // }
+    // print(_questionIndex);
   }
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      {
-        'question': 'What\'s your favorite type of food?',
-        'answers': ['Quinoa', 'Lentils', 'Brown rice']
-      },
-      {
-        'question': 'What\'s your favorite temperature for weather?',
-        'answers': ['70F', '80F', '90F']
-      },
-    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text("My First App"),
           backgroundColor: Colors.red,
         ),
-        body: Column(
-          children: <Widget>[
-            Question((questions[_questionIndex]['question'] as String)),
-            ...(questions[_questionIndex]['answers'] as List<String>)
-                .map((answer) {
-              return Answer(_answerQuestion, answer);
-            }).toList(),
-            // RaisedButton(onPressed: null, child: Text('Answer 1')),
-          ],
-        ),
+        body: _questionIndex < questions.length
+            ? Quiz(_answerQuestion, questions, _questionIndex)
+            : Center(child: Text('You did it!!')), //,
         // backgroundColor: Colors.black,
       ),
     );
