@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import './question.dart';
 import './answer.dart';
 import './quiz.dart';
+import './result.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -19,53 +20,73 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
-  final questions = [
+  int _totalScore = 0;
+  final _questions = [
     {
       'question': 'What\'s your favorite type of food?',
-      'answers': ['Quinoa', 'Lentils', 'Brown rice']
+      'answers': [
+        {'answerText': 'Quinoa', 'answerScore': 5},
+        {'answerText': 'Lentils', 'answerScore': 10},
+        {'answerText': 'Brown rice', 'answerScore': 15},
+      ]
     },
     {
       'question': 'What\'s your favorite temperature for weather?',
-      'answers': ['70F', '80F', '90F']
+      'answers': [
+        {'answerText': '70F', 'answerScore': 5},
+        {'answerText': '80F', 'answerScore': 10},
+        {'answerText': '90F', 'answerScore': 15},
+      ]
     },
   ];
 
-  void _answerQuestion() {
+  // increment _answerScore based on answer selected
+  // compute personality based on final _answerScore
+  // Result
+  // return personality type through if else statements and final _answerScore
+
+  // Reset button
+  // reset _answerScore to zero and quiz to first question
+
+  void _answerQuestion(int scoreIncrement) {
     setState(() {
-      _questionIndex < questions.length
+      _totalScore += scoreIncrement;
+      _questionIndex < _questions.length
           ? _questionIndex += 1
           : _questionIndex = 0;
     });
-    // if (_questionIndex < questions.length) {
-    //   print('True');
-    // } else {
-    //   setState(() {
-    //     _questionIndex = 0;
-    //   });
-    // }
-    // print(_questionIndex);
+  }
+
+  void _restartQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("My First App"),
-          backgroundColor: Colors.red,
-        ),
-        body: _questionIndex < questions.length
-            ? Quiz(_answerQuestion, questions, _questionIndex)
-            : Center(child: Text('You did it!!')), //,
-        // backgroundColor: Colors.black,
-      ),
+          appBar: AppBar(
+            title: Text("My First App"),
+            backgroundColor: Colors.red,
+          ),
+          body: _questionIndex < _questions.length
+              ? Quiz(
+                  answerQuestion: _answerQuestion,
+                  questions: _questions,
+                  questionIndex: _questionIndex)
+              : Result(
+                  totalScore: _totalScore,
+                  restartQuiz: _restartQuiz,
+                )), //,
+      // backgroundColor: Colors.black,
     );
   }
 }
 
-
-
-// APPENDIX 
+// APPENDIX
 
 // ElevatedButton(
 //                 onPressed: () => print('Answer 1 chosen'),

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class Answer extends StatelessWidget {
   // const Answer({Key? key}) : super(key: key);
 
-  final String answer;
-  final VoidCallback selectHandler;
+  final String answerText;
+  final VoidCallback answerQuestion;
 
-  Answer(this.selectHandler, this.answer);
+  Answer(this.answerQuestion, this.answerText);
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +14,13 @@ class Answer extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           // color: Colors.blue,
-          child: Text(answer, style: TextStyle(color: Colors.white)),
-          onPressed: selectHandler, //() => print('Answer chosen'),
+          child: Text(answerText, style: TextStyle(color: Colors.white)),
+          onPressed: answerQuestion, //() => print('Answer chosen'),
+          // style: ElevatedButton.styleFrom(
+          //   fixedSize: Size.zero,
+          //   padding: EdgeInsets.only(top: 10.0),
+          //   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          // )
         ));
   }
 }
